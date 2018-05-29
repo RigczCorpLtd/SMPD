@@ -80,7 +80,24 @@ void MainWindow::on_FSpushButtonCompute_clicked()
         for(auto combination : combianationsToCheck) {
             //First we compute avg matrix
             boost::numeric::ublas::matrix<float> avg_mat = boost::numeric::ublas::matrix<float>(dimension, 1, 0);
-
+            for(int combination_iter = 0; combination_iter < dimension; combination_iter++) {
+                int featureNo = combination[combination_iter];
+                for(int objectNo = 0; objectNo < database.getNoObjects(); objectNo++) {
+                    avg_mat(combination_iter, 1) = avg_mat(combination_iter, 1) + database.getObjects()[objectNo].features[featureNo];
+                }
+                avg_mat(combination_iter, 1) = avg_mat(combination_iter, 1) / database.getNoObjects();
+            }
+            //At this moment avg_mat is defined as follows: avg_mat(order_of_feature_in_combination, 1)
+            //So you can use it as follows avg_mat(order_of_feature_in_combination, 1) == average of fature with number defined in combination[order_of_feature_in_combination]
+            //Lets compute covariance matrix
+            //First lets assemble BFM - Big Freakin Matrix
+            boost::numeric::ublas::matrix<float> feature_value_mat = boost::numeric::ublas::matrix<float>(dimension, database.getNoObjects());
+            for(int combination_iter = 0; combination_iter < dimension; combination_iter++) {
+                for(int objectNo = 0; objectNo < database.getNoObjects(); objectNo++) {
+                    int featureNo = combination[combination_iter];
+                    feature_value_mat(combination_iter, objectNo) = database.getObjects()[objectNo].features[featureNo];
+                }
+            }
 
         }
     }

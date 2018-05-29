@@ -8,7 +8,7 @@ Fisher::Fisher()
 std::vector<std::vector<int>> Fisher::getAllCombinations(int numberOfElements, int size) {
     //Making working range to check if 0 or 1 is needed to be start
     std::vector<int> workingRange;
-    for(int i =1; i <= numberOfElements; i++) {
+    for(int i = 0; i < numberOfElements; i++) {
         workingRange.push_back(i);
     }
     std::vector<std::vector<int>> result;
